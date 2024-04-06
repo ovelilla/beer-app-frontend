@@ -2,12 +2,19 @@
 import {
   LuBeer,
   LuBookOpen,
-  LuLogOut,
   LuLogIn,
+  LuLogOut,
+  LuSearch,
   LuUserPlus2,
 } from "react-icons/lu";
 
 const loggedInNavigationMenuItems = [
+  {
+    icon: LuSearch,
+    label: "Buscador",
+    path: "/buscador",
+    admin: true,
+  },
   {
     icon: LuBeer,
     label: "Cervezas",

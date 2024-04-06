@@ -8,8 +8,9 @@ import DataTableHook from "./hooks/data-table.hook";
 export const DataTable = ({
   columns,
   data,
-  handleClickAddRecord,
+  handleCreate,
   initialColumnVisibility,
+  multipleSelectActions,
 }) => {
   const { globalFilter, setGlobalFilter, table } = DataTableHook({
     columns,
@@ -22,13 +23,13 @@ export const DataTable = ({
       <Header
         {...{
           globalFilter,
-          handleClickAddRecord,
+          handleCreate,
           setGlobalFilter,
           table,
         }}
       />
       <Body {...{ columns, table }} />
-      <Footer {...{ table }} />
+      <Footer {...{ multipleSelectActions, table }} />
     </div>
   );
 };

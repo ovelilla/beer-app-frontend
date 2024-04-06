@@ -11,11 +11,11 @@ import constants from "./constants/add-record.constants";
 // Icons
 import { LuPlus } from "react-icons/lu";
 
-export const AddRecord = ({ handleClickAddRecord }) => (
+export const AddRecord = ({ handleCreate }) => (
   <TooltipProvider>
     <Tooltip>
       <TooltipTrigger asChild>
-        <Button variant="outline" size="icon" onClick={handleClickAddRecord}>
+        <Button variant="outline" size="icon" onClick={handleCreate}>
           <span className="sr-only">{constants.SR_LABEL}</span>
           <LuPlus className="h-4 w-4" />
         </Button>

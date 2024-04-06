@@ -1,23 +1,40 @@
 // Vendors
 import axios from "@/core/config/axios";
+import { toast } from "sonner";
+// Constants
+import beersConstants from "../constants/beers.constants";
+import constants from "./constants/beers.handlers.constants";
 // Libs
 import { setFormErrors } from "@/core/lib/utils";
 
-const editHandler = async ({ form, row, setOpen }) => {
-  form.reset(row);
-  setOpen(true);
-  console.log("Edit", row);
+const createHandler = ({ setOpenDialog }) => {
+  setOpenDialog(true);
 };
 
-const deleteHandler = async ({ row }) => {
-  console.log("Delete", row);
+const deleteHandler = async ({ row, setSelectedRow, setOpenAlert }) => {
+  setSelectedRow(row);
+  setOpenAlert(true);
+};
+
+const deleteMultipleHandler = async ({
+  rows,
+  setSelectedRows,
+  setOpenAlert,
+}) => {
+  setSelectedRows(rows);
+  setOpenAlert(true);
+};
+
+const editHandler = async ({ form, row, setSelectedRow, setOpenDialog }) => {
+  setSelectedRow(row);
+  form.reset(row);
+  setOpenDialog(true);
 };
 
 const fetchHandler = async ({ setData, setLoading }) => {
   setLoading(true);
-
   try {
-    const { data } = await axios.get("/beers", { withCredentials: true });
+    const { data } = await axios.get(constants.PATH, { withCredentials: true });
     setData(data);
   } catch (error) {
     console.error(error);
@@ -25,49 +42,179 @@ const fetchHandler = async ({ setData, setLoading }) => {
     setLoading(false);
   }
 };
-const submitHandler = async ({ form, setMessage, setLoading, values }) => {
-  setMessage({ text: "", type: "" });
-  setLoading(true);
 
+const resetFormHandler = ({ form, openAlert, openDialog, setSelectedRow }) => {
+  if (openAlert || openDialog) {
+    return;
+  }
+  setSelectedRow(null);
+  form.reset(beersConstants.DEFAULT_FORM_VALUES);
+};
+
+const submitHandler = async ({
+  selectedRow,
+  form,
+  setData,
+  setLoading,
+  setOpenDialog,
+  values,
+}) => {
+  if (selectedRow) {
+    submitHandlerEdit({
+      selectedRow,
+      form,
+      setData,
+      setLoading,
+      setOpenDialog,
+      values,
+    });
+  } else {
+    submitHandlerCreate({
+      form,
+      setData,
+      setLoading,
+      setOpenDialog,
+      values,
+    });
+  }
+};
+
+const submitHandlerCreate = async ({
+  form,
+  setData,
+  setLoading,
+  setOpenDialog,
+  values,
+}) => {
+  setLoading(true);
   try {
-    const { data } = await axios.post("/auth/login", values, {
+    const { data } = await axios.post(constants.PATH, values, {
       withCredentials: true,
     });
-    console.log(data);
-    // form.reset();
+    setOpenDialog(false);
+    setData((prev) => [...prev, data.beer]);
+    toast.success(data.message);
   } catch (error) {
     if (error.response.data.errors) {
       setFormErrors(form, error);
-    }
-    if (error.response.data.message) {
-      setMessage({
-        text: error.response.data.message.text,
-        type: error.response.data.message.type,
-      });
     }
   } finally {
     setLoading(false);
   }
 };
 
-const clickAddRecordHandler = ({ setOpen }) => {
-  setOpen(true);
+const submitHandlerEdit = async ({
+  selectedRow,
+  form,
+  setData,
+  setLoading,
+  setOpenDialog,
+  values,
+}) => {
+  setLoading(true);
+  try {
+    const { data } = await axios.put(
+      `${constants.PATH}/${selectedRow._id}`,
+      values,
+      {
+        withCredentials: true,
+      }
+    );
+    setOpenDialog(false);
+    setData((prev) =>
+      prev.map((item) => (item._id === selectedRow._id ? data.beer : item))
+    );
+    toast.success(data.message);
+  } catch (error) {
+    if (error.response.data.errors) {
+      setFormErrors(form, error);
+    }
+  } finally {
+    setLoading(false);
+  }
 };
 
-const LoginHandlers = ({ form, setData, setMessage, setLoading, setOpen }) => {
+const submitHandlerDelete = async ({ selectedRow, setData, setLoading }) => {
+  setLoading(true);
+  try {
+    const { data } = await axios.delete(
+      `${constants.PATH}/${selectedRow._id}`,
+      {
+        withCredentials: true,
+      }
+    );
+    setData((prev) => prev.filter((item) => item._id !== selectedRow._id));
+    toast.success(data.message);
+  } catch (error) {
+    console.error(error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+const submitHandlerDeleteMultiple = async ({
+  selectedRows,
+  setData,
+  setLoading,
+  setSelectedRows,
+}) => {
+  console.log(selectedRows);
+  setLoading(true);
+  try {
+    const { data } = await axios.delete(constants.PATH, {
+      data: { ids: selectedRows.map((row) => row._id) },
+      withCredentials: true,
+    });
+    setData((prev) => prev.filter((item) => !selectedRows.includes(item)));
+    setSelectedRows([]);
+    toast.success(data.message);
+  } catch (error) {
+    console.error(error);
+  } finally {
+    setLoading(false);
+  }
+};
+
+const LoginHandlers = ({
+  form,
+  openAlert,
+  openDialog,
+  selectedRow,
+  selectedRows,
+  setData,
+  setLoading,
+  setOpenAlert,
+  setOpenDialog,
+  setSelectedRow,
+  setSelectedRows,
+}) => {
   return {
-    handleEdit: (row) => editHandler({ form, row, setOpen }),
-    handleDelete: (row) => deleteHandler({ row }),
+    handleCreate: () => createHandler({ form, setOpenDialog }),
+    handleDelete: (row) => deleteHandler({ row, setSelectedRow, setOpenAlert }),
+    handleDeleteMultiple: (rows) =>
+      deleteMultipleHandler({ rows, setSelectedRows, setOpenAlert }),
+    handleEdit: (row) =>
+      editHandler({ form, row, setSelectedRow, setOpenDialog }),
     handleFetch: () => fetchHandler({ setData, setLoading }),
-    handleClickAddRecord: () => clickAddRecordHandler({ setOpen }),
+    handleResetForm: () =>
+      resetFormHandler({ form, openAlert, openDialog, setSelectedRow }),
     handleSubmit: (values) =>
       submitHandler({
+        selectedRow,
         form,
         setData,
-        setMessage,
         setLoading,
-        setOpen,
+        setOpenDialog,
         values,
+      }),
+    handleSubmitDelete: () =>
+      submitHandlerDelete({ selectedRow, setData, setLoading }),
+    handleSubmitDeleteMultiple: () =>
+      submitHandlerDeleteMultiple({
+        selectedRows,
+        setData,
+        setLoading,
+        setSelectedRows,
       }),
   };
 };

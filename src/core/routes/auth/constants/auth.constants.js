@@ -1,5 +1,5 @@
 const constants = {
-  REDIRECT_PATH: '/dashboard',
+  REDIRECT_PATH: "/buscador",
 };
 
 export default constants;

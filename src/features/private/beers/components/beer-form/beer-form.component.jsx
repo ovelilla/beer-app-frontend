@@ -14,14 +14,12 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
-import { Alert } from "@/components/alert/alert.component";
 import { ButtonLoading } from "@/components/button-loading/button-loading.component";
 import { Input } from "@/components/ui/input";
 // Constants
 import constants from "./constants/beer-form.constants";
-// Hooks
 
-export const BeerForm = ({ form, handleSubmit, label, loading, message }) => {
+export const BeerForm = ({ form, handleSubmit, label, loading }) => {
   return (
     <Form {...form}>
       <form
@@ -30,30 +28,6 @@ export const BeerForm = ({ form, handleSubmit, label, loading, message }) => {
       >
         <div className="flex flex-col gap-4">
           {constants.FORM_FIELDS.map((formField) => {
-            if (formField.type === "text") {
-              return (
-                <FormField
-                  control={form.control}
-                  key={formField.name}
-                  name={formField.name}
-                  render={({ field }) => (
-                    <FormItem>
-                      <FormLabel>{formField.label}</FormLabel>
-                      <FormControl>
-                        <Input
-                          {...field}
-                          disabled={loading}
-                          placeholder={formField.placeholder}
-                          type={formField.type}
-                        />
-                      </FormControl>
-                      <FormMessage />
-                    </FormItem>
-                  )}
-                />
-              );
-            }
-
             if (formField.type === "select") {
               return (
                 <FormField
@@ -66,6 +40,7 @@ export const BeerForm = ({ form, handleSubmit, label, loading, message }) => {
                       <Select
                         onValueChange={field.onChange}
                         defaultValue={field.value}
+                        disabled={loading}
                       >
                         <FormControl>
                           <SelectTrigger>
@@ -86,9 +61,30 @@ export const BeerForm = ({ form, handleSubmit, label, loading, message }) => {
                 />
               );
             }
+
+            return (
+              <FormField
+                control={form.control}
+                key={formField.name}
+                name={formField.name}
+                render={({ field }) => (
+                  <FormItem>
+                    <FormLabel>{formField.label}</FormLabel>
+                    <FormControl>
+                      <Input
+                        {...field}
+                        disabled={loading}
+                        placeholder={formField.placeholder}
+                        type={formField.type}
+                      />
+                    </FormControl>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            );
           })}
         </div>
-        <Alert {...message} />
         <ButtonLoading
           {...constants.BUTTON_SUBMIT_PROPS}
           {...{ label, loading }}

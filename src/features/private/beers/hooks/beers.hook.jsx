@@ -2,6 +2,8 @@
 import { useForm } from "react-hook-form";
 import { useEffect, useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
+// Constants
+import beersConstants from "../constants/beers.constants";
 // Handlers
 import BeersHandlers from "../handlers/beers.handlers";
 // Schemas
@@ -9,67 +11,66 @@ import { BeersSchema } from "../schemas/beers.schema";
 
 const BeersHook = () => {
   const [data, setData] = useState([]);
-  const [message, setMessage] = useState({
-    text: "",
-    type: "",
-  });
   const [loading, setLoading] = useState(false);
-  const [open, setOpen] = useState(false);
+  const [openAlert, setOpenAlert] = useState(false);
+  const [openDialog, setOpenDialog] = useState(false);
+  const [selectedRow, setSelectedRow] = useState(null);
+  const [selectedRows, setSelectedRows] = useState([]);
 
   const form = useForm({
     resolver: zodResolver(BeersSchema),
-    defaultValues: {
-      name: "",
-      color: "",
-      body: "",
-      flavor: "",
-      alcohol: 0,
-      country: "",
-      province: "",
-      pairing: "",
-      brand: "",
-      class: "",
-      style: "",
-      craft: "",
-      fermentation: "",
-      ibus: 0,
-      description: "",
-      popularity: "",
-      recommendation: "",
-      brewery: "",
-      reputation: "",
-    },
+    defaultValues: beersConstants.DEFAULT_FORM_VALUES,
   });
 
   const {
-    handleClickAddRecord,
+    handleCreate,
     handleDelete,
+    handleDeleteMultiple,
     handleEdit,
     handleFetch,
+    handleResetForm,
     handleSubmit,
+    handleSubmitDelete,
+    handleSubmitDeleteMultiple,
   } = BeersHandlers({
     form,
+    openAlert,
+    openDialog,
+    selectedRow,
+    selectedRows,
     setData,
     setLoading,
-    setMessage,
-    setOpen,
+    setOpenAlert,
+    setOpenDialog,
+    setSelectedRow,
+    setSelectedRows,
   });
 
   useEffect(() => {
     handleFetch();
   }, []);
 
+  useEffect(() => {
+    handleResetForm();
+  }, [openDialog, openAlert]);
+
   return {
     data,
     form,
-    handleClickAddRecord,
+    handleCreate,
     handleDelete,
+    handleDeleteMultiple,
     handleEdit,
     handleSubmit,
+    handleSubmitDelete,
+    handleSubmitDeleteMultiple,
     loading,
-    message,
-    open,
-    setOpen,
+    openAlert,
+    openDialog,
+    selectedRow,
+    selectedRows,
+    setOpenAlert,
+    setOpenDialog,
   };
 };
 

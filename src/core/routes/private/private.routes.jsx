@@ -1,5 +1,6 @@
 // Pages
 import BeersPage from "@/features/private/beers/beers.page";
+import FinderPage from "@/features/private/finder/finder.page";
 import LogoutPage from "@/features/auth/logout/logout.page";
 
 export const privateRoutes = [
@@ -8,8 +9,8 @@ export const privateRoutes = [
     element: <LogoutPage />,
   },
   {
-    path: "/dashboard",
-    element: <div>Dashboard</div>,
+    path: "/buscador",
+    element: <FinderPage />,
   },
   {
     path: "/beerpedia",

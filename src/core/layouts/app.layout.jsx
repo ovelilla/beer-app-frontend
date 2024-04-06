@@ -3,6 +3,7 @@ import { Outlet } from "react-router-dom";
 // Components
 import { Header } from "@/components/header/header.component";
 import { Container } from "@/components/container/container.component";
+import { Toaster } from "@/components/ui/sonner";
 
 const AppLayout = () => {
   return (
@@ -14,6 +15,7 @@ const AppLayout = () => {
           <Outlet />
         </Container>
       </main>
+      <Toaster />
     </div>
   );
 };

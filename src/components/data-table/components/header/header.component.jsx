@@ -5,13 +5,13 @@ import { Visibility } from "./components/visibility/visibility.component";
 
 export const Header = ({
   globalFilter,
-  handleClickAddRecord,
+  handleCreate,
   setGlobalFilter,
   table,
 }) => (
   <div className="flex items-center gap-4">
     <Filter {...{ globalFilter, setGlobalFilter }} />
-    <AddRecord {...{ handleClickAddRecord }} />
+    <AddRecord {...{ handleCreate }} />
     <Visibility {...{ table }} />
   </div>
 );
