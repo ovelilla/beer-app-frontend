@@ -8,7 +8,7 @@ const constants = {
     craft: "",
     country: "",
     pairing: "",
-    class: "",
+    type: "",
     event: "",
   },
 };

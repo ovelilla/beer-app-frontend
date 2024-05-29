@@ -1,3 +1,5 @@
+// Vendors
+import { Link } from "react-router-dom";
 // Components
 import { Sorting } from "@/components/data-table/components/sorting/sorting.component";
 import {
@@ -23,8 +25,26 @@ export const getColumnsConfig = ({ handleDelete, handleEdit }) => {
       header: ({ table }) => <SelectionAllRows table={table} />,
     },
     {
+      accessorKey: "cloudinaryPublicId",
+      cell: ({ row }) => (
+        <img
+          src={`https://res.cloudinary.com/ovelillaa/image/upload/w_48,c_scale,f_auto,q_auto/${row.original.cloudinaryPublicId}`}
+          alt={row.original.name}
+          className="h-10 w-10 object-cover rounded-full"
+          width="40"
+          height="40"
+          loading="lazy"
+        />
+      ),
+      header: "Imágen",
+      meta: "Imágen",
+    },
+    {
       accessorKey: "name",
       header: ({ column }) => <Sorting column={column} title="Nombre" />,
+      cell: ({ row }) => (
+        <Link to={`/beer/${row.original._id}`}>{row.original.name}</Link>
+      ),
       meta: "Nombre",
     },
     {
@@ -69,7 +89,7 @@ export const getColumnsConfig = ({ handleDelete, handleEdit }) => {
       meta: "Marca",
     },
     {
-      accessorKey: "class",
+      accessorKey: "type",
       header: ({ column }) => <Sorting column={column} title="Clase" />,
       meta: "Clase",
     },
@@ -166,16 +186,17 @@ export const getMultipleSelectActions = ({ handleDeleteMultiple }) => {
 
 export const initialColumnVisibility = {
   body: false,
-  flavor: false,
-  province: false,
-  pairing: false,
+  brewery: false,
   class: false,
   craft: false,
-  fermentation: false,
-  ibus: false,
   description: false,
+  event: false,
+  fermentation: false,
+  flavor: false,
+  ibus: false,
+  pairing: false,
   popularity: false,
+  province: false,
   recommendation: false,
-  brewery: false,
   reputation: false,
 };

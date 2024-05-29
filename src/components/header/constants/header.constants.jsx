@@ -3,7 +3,6 @@ import {
   LuBeer,
   LuBookOpen,
   LuLogIn,
-  LuLogOut,
   LuSearch,
   LuUserPlus2,
 } from "react-icons/lu";
@@ -13,25 +12,25 @@ const loggedInNavigationMenuItems = [
     icon: LuSearch,
     label: "Buscador",
     path: "/buscador",
-    admin: true,
+    admin: false,
   },
   {
     icon: LuBeer,
-    label: "Cervezas",
-    path: "/cervezas",
+    label: "Cervezas Admin",
+    path: "/cervezas-admin",
     admin: true,
   },
   {
     icon: LuBookOpen,
-    label: "Beerpedia",
-    path: "/beerpedia",
+    label: "Beertionary",
+    path: "/beertionary",
     admin: false,
   },
   {
-    icon: LuLogOut,
-    label: "Logout",
-    path: "/logout",
-    admin: false,
+    icon: LuBookOpen,
+    label: "Beertionary Admin",
+    path: "/beertionary-admin",
+    admin: true,
   },
 ];
 

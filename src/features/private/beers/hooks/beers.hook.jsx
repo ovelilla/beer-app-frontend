@@ -12,6 +12,9 @@ import { BeersSchema } from "../schemas/beers.schema";
 const BeersHook = () => {
   const [data, setData] = useState([]);
   const [loading, setLoading] = useState(false);
+  const [imagePreviewSrc, setImagePreviewSrc] = useState(
+    beersConstants.DEFAULT_IMAGE_PREVIEW_SRC
+  );
   const [openAlert, setOpenAlert] = useState(false);
   const [openDialog, setOpenDialog] = useState(false);
   const [selectedRow, setSelectedRow] = useState(null);
@@ -23,8 +26,10 @@ const BeersHook = () => {
   });
 
   const {
+    handleChangeInputFile,
     handleCreate,
     handleDelete,
+    handleDeleteImage,
     handleDeleteMultiple,
     handleEdit,
     handleFetch,
@@ -40,6 +45,7 @@ const BeersHook = () => {
     selectedRows,
     setData,
     setLoading,
+    setImagePreviewSrc,
     setOpenAlert,
     setOpenDialog,
     setSelectedRow,
@@ -57,13 +63,16 @@ const BeersHook = () => {
   return {
     data,
     form,
+    handleChangeInputFile,
     handleCreate,
     handleDelete,
+    handleDeleteImage,
     handleDeleteMultiple,
     handleEdit,
     handleSubmit,
     handleSubmitDelete,
     handleSubmitDeleteMultiple,
+    imagePreviewSrc,
     loading,
     openAlert,
     openDialog,

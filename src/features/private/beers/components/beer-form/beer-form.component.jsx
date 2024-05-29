@@ -7,6 +7,7 @@ import {
   FormLabel,
   FormMessage,
 } from "@/components/ui/form";
+import { ImagePreview } from "./components/image-preview/image-preview.component";
 import {
   Select,
   SelectContent,
@@ -18,8 +19,19 @@ import { ButtonLoading } from "@/components/button-loading/button-loading.compon
 import { Input } from "@/components/ui/input";
 // Constants
 import constants from "./constants/beer-form.constants";
+import { Fragment } from "react";
 
-export const BeerForm = ({ form, handleSubmit, label, loading }) => {
+export const BeerForm = ({
+  form,
+  handleChangeInputFile,
+  handleDeleteImage,
+  handleSubmit,
+  imagePreviewSrc,
+  label,
+  loading,
+}) => {
+  const fileRef = form.register("image");
+
   return (
     <Form {...form}>
       <form
@@ -59,6 +71,39 @@ export const BeerForm = ({ form, handleSubmit, label, loading }) => {
                     </FormItem>
                   )}
                 />
+              );
+            }
+
+            if (formField.type === "file") {
+              return (
+                <Fragment key={formField.name}>
+                  <ImagePreview
+                    {...{
+                      handleDeleteImage,
+                      imagePreviewSrc,
+                    }}
+                  />
+                  <FormField
+                    control={form.control}
+                    name={formField.name}
+                    render={() => (
+                      <FormItem>
+                        <FormLabel>{formField.label}</FormLabel>
+                        <FormControl>
+                          <Input
+                            {...fileRef}
+                            accept={formField.accept}
+                            disabled={loading}
+                            onChange={handleChangeInputFile}
+                            placeholder={formField.placeholder}
+                            type={formField.type}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    )}
+                  />
+                </Fragment>
               );
             }
 

@@ -366,7 +366,7 @@ const constants = {
         "White Ale",
       ],
       label: "¿Tienes alguna preferencia de clase de cerveza en mente?",
-      name: "class",
+      name: "type",
       placeholder: "Clase de cerveza",
       type: "select",
     },

@@ -16,13 +16,16 @@ const BeersPage = () => {
   const {
     data,
     form,
+    handleChangeInputFile,
     handleCreate,
     handleDelete,
+    handleDeleteImage,
     handleDeleteMultiple,
     handleEdit,
     handleSubmit,
     handleSubmitDelete,
     handleSubmitDeleteMultiple,
+    imagePreviewSrc,
     loading,
     openAlert,
     openDialog,
@@ -61,7 +64,10 @@ const BeersPage = () => {
         <BeerForm
           {...{
             form,
+            handleChangeInputFile,
+            handleDeleteImage,
             handleSubmit,
+            imagePreviewSrc,
             label: selectedRow ? "Editar" : "Crear",
             loading,
           }}

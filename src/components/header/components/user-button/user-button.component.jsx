@@ -4,7 +4,10 @@ import { Link } from "react-router-dom";
 import {
   DropdownMenu,
   DropdownMenuContent,
+  DropdownMenuGroup,
   DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Avatar, AvatarFallback } from "@/components/ui/avatar";
@@ -28,19 +31,30 @@ export const UserButton = () => {
         </Avatar>
       </DropdownMenuTrigger>
       <DropdownMenuContent className="w-40" align="end">
-        {user &&
-          constants.LOGGED_IN_MENU_ITEMS.map((item, index) => {
-            return (
-              <DropdownMenuItem key={index} asChild className="cursor-pointer">
-                <Link to={item.path}>
-                  <span className="flex items-center gap-2">
-                    <item.icon size={16} />
-                    {item.label}
-                  </span>
-                </Link>
-              </DropdownMenuItem>
-            );
-          })}
+        {user && (
+          <>
+            <DropdownMenuLabel>{user.name}</DropdownMenuLabel>
+            <DropdownMenuSeparator />
+            <DropdownMenuGroup>
+              {constants.LOGGED_IN_MENU_ITEMS.map((item, index) => {
+                return (
+                  <DropdownMenuItem
+                    key={index}
+                    asChild
+                    className="cursor-pointer"
+                  >
+                    <Link to={item.path}>
+                      <span className="flex items-center gap-2">
+                        <item.icon size={16} />
+                        {item.label}
+                      </span>
+                    </Link>
+                  </DropdownMenuItem>
+                );
+              })}
+            </DropdownMenuGroup>
+          </>
+        )}
         {!user &&
           constants.LOGGED_OUT_MENU_ITEMS.map((item, index) => {
             return (

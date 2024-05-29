@@ -7,6 +7,13 @@ const constants = {
       type: "text",
     },
     {
+      accept: "image/*",
+      label: "Imagen",
+      name: "image",
+      placeholder: "Imagen de la cerveza",
+      type: "file",
+    },
+    {
       items: [
         "Ambar",
         "Dorado",
@@ -363,7 +370,7 @@ const constants = {
         "White Ale",
       ],
       label: "Clase",
-      name: "class",
+      name: "type",
       placeholder: "Clase de cerveza",
       type: "select",
     },

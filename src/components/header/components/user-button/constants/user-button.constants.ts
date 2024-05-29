@@ -1,12 +1,12 @@
 // Icons
-import { LuLogIn, LuLogOut, LuSettings, LuUserPlus2 } from "react-icons/lu";
+import { LuLogIn, LuLogOut, LuHeart, LuUserPlus2 } from "react-icons/lu";
 
 const constants = {
   LOGGED_IN_MENU_ITEMS: [
     {
-      icon: LuSettings,
-      label: "Settings",
-      path: "/settings",
+      icon: LuHeart,
+      label: "Favoritos",
+      path: "/favoritos",
     },
     {
       icon: LuLogOut,

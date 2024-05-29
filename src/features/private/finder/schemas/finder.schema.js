@@ -10,6 +10,6 @@ export const FinderSchema = z.object({
   craft: z.string().optional(),
   country: z.string().optional(),
   pairing: z.string().optional(),
-  class: z.string().optional(),
+  type: z.string().optional(),
   event: z.string().optional(),
 });
